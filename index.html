@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Random Project name Generator</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="description" content="For those who want an efficient project name: get it in seconds and enjoy (drink) it when you're done." />
+        <meta name="keywords" content="random project name generator" />
+        <!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery.dropotron.min.js"></script>
+        <script src="js/jquery.scrollgress.min.js"></script>
+        <script src="js/skel.min.js"></script>
+        <script src="js/skel-layers.min.js"></script>
+        <script src="js/init.js"></script>
+        <link rel="stylesheet" href="css/custom.css" />
+        <noscript>
+            <link rel="stylesheet" href="css/skel.css" />
+            <link rel="stylesheet" href="css/style.css" />
+            <link rel="stylesheet" href="css/style-wide.css" />
+        </noscript>
+        <script type="text/javascript">
+            $ = jQuery.noConflict();
+            var currentDataSource = "cocktails.html";
+            $(document).ready(function () {
+                $(".actions").hide();
+                $(".cocktails").click(function () { fetchSomethingToDrink($(this).attr('class') + ".html") });
+                $(".beers").click(function () { fetchSomethingToDrink($(this).attr('class') + ".html") });
+                $(".whiskies").click(function () { fetchSomethingToDrink($(this).attr('class') + ".html") });
+                $(".rums").click(function () { fetchSomethingToDrink($(this).attr('class') + ".html") });
+                // Be classy, propose cocktails first...
+                fetchSomethingToDrink("cocktails.html");
+            });
+            function fetchSomethingToDrink(datasource) {
+                if(datasource)
+                {
+                    currentDataSource = datasource
+                }
+                $.ajax({
+                    url: currentDataSource,
+                    type: 'GET',
+                    success: function (pageHTML) {
+                        var cocktails = new Array();
+                        var cocktailsMap = {};
+            
+                        $(pageHTML).find("a").each(function () {
+                            cocktails.push($(this).text());
+                            cocktailsMap[$(this).text()] = $(this).attr("href");
+                        });
+                        var randomCocktail = cocktails[Math.floor(Math.random() * cocktails.length)];
+                        $("#cocktailName").text(randomCocktail);
+                        $("#cocktailDesc").text("Congratz! Your new project name is " + randomCocktail + "!");
+                        $("#cocktailLink").attr("href", cocktailsMap[randomCocktail]);
+                        $(".actions").show();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#cocktailName").text("Ouch, could not get anything :(");
+                        $("#cocktailDesc").text("Reload the page, just in case. If it still does not work, restart your computer and it should be ok. Just kidding.");
+                        $(".actions").hide();
+                    }
+                });
+            }
+        </script>
+        <!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+        <script type="text/javascript">
+            window.appInsights=window.appInsights||function(ai){
+                function f(t){ai[t]=function(){var i=arguments;ai.queue.push(function(){ai[t].apply(ai,i)})}}
+                var t=document,r="script",u=t.createElement(r),i;for(u.src=ai.url||"//az416426.vo.msecnd.net/scripts/a/ai.0.js",t.getElementsByTagName(r)[0].parentNode.appendChild(u),ai.cookie=t.cookie,ai.queue=[],i=["Event","Exception","Metric","PageView","Trace"];i.length;)f("track"+i.pop());
+                return ai;
+            }({
+                iKey:"6beb9320-904a-4c39-86f6-30d03649f7da"
+            });
+            
+            appInsights.trackPageView();
+        </script>
+    </head>
+    <body class="landing">
+        <!-- Header -->
+        <header id="header" class="alt">
+            <h1><a href="index.html">Random Project name Generator</a> by <a href="https://www.google.fr/search?q=random+guy" target="_blank">Random guy</a></h1>
+            <nav id="nav">
+                <ul>
+                    <li>
+                        <a href="" class="icon fa-angle-down">Choose your poison</a>
+                        <ul>
+                            <li><a class="beers" href="#">Beers</a></li>
+                            <li><a class="cocktails" href="#">Cocktails</a></li>
+                            <li><a class="whiskies" href="#">Whiskies</a></li>
+                            <li><a class="rums" href="#">Rums</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Banner -->
+        <section id="banner">
+            <h2 id="cocktailName">Looking for a great project name...</h2>
+            <p id="cocktailDesc"></p>
+            <ul class="actions">
+                <li><a id="cocktailLink" href="#" target="_blank" class="button special">Say what?</a></li>
+                <li><a href="javascript:fetchSomethingToDrink();" class="button">Nahh, pick another one</a></li>
+            </ul>
+        </section>
+
+        <section class="box special features">
+            <div class="features-row">
+                <section class="beers">
+                    <h3>Beers</h3>
+                    <p>For those with a big belly.</p>
+                </section>
+                <section class="cocktails">
+                    <h3>Cocktails</h3>
+                    <p>At least, try to look classy...</p>
+                </section>
+            </div>
+            <div class="features-row">
+                <section class="whiskies">
+                    <h3>Whiskies</h3>
+                    <p>For the leprauchauns livin' in the Highlands.</p>
+                </section>
+                <section class="rums">
+                    <h3>Rums (not done yet, bro)</h3>
+                    <p>Arrrrrr !!! (yep, that's my pirate voice)</p>
+                </section>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <ul class="copyright">
+                <li>&copy; Website under the <a target="_blank" href="http://www.wtfpl.net/">WTFPL</a>.</li>
+                <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+            </ul>
+        </footer>
+    </body>
+</html>
